@@ -1,0 +1,12 @@
+extends pug/base_template
+include pug/mixins/typography
+
+block content
+    -
+        var files = locals.getFilesInFolder(locals.config.path.source, "pug").filter(filename => filename !== "index.pug");
+        var htmlFiles = locals.changeFilesExtentions(files, "pug", "html");
+
+    ul
+        each filename in htmlFiles
+            li
+                a(href=`./${filename}`)= filename
