@@ -9,7 +9,7 @@ class LazyLoader {
             once: true,
             onShow: null,
             target: null,
-            observerOption: {
+            observerOptions: {
                 rootMargin: "200px 200px 200px 200px"
             }
         };
@@ -22,7 +22,7 @@ class LazyLoader {
     };
 
     getObserver = () => {
-        return new IntersectionObserver(this.observerCallback(), this.options.observerOption);
+        return new IntersectionObserver(this.observerCallback(), this.options.observerOptions);
     };
 
     observerCallback = () => {
@@ -53,11 +53,14 @@ class LazyLoader {
         const target = this.options.target;
 
         if (typeof target === "string") {
-            const nodes = document.querySelectorAll(target);
+            const nodes = Array.from(document.querySelectorAll(target));
             nodes.forEach(node => {
                 node.classList.add(this.options.classNames.listen);
                 this.observer.observe(node);
             });
+        } else if (target instanceof HTMLElement) {
+            target.classList.add(this.options.classNames.listen);
+            this.observer.observe(target);
         } else {
             console.error("Unsupported type for target");
         }
